@@ -1,0 +1,5 @@
+root - WARNING - {'Transaction': 'TRANSACTION STARTED', 'Booking ID': '5fec808fe0c231d1daf0e86d', 'Customer ID': 'EQ23EMPAR2SASD'}
+werkzeug - INFO - 192.168.160.4 - - [30/Dec/2020 13:28:47] "[37mPOST /booking HTTP/1.0[0m" 201 -
+root - WARNING - {'Transaction': 'BOOKING IS AVAILABLE', 'Booking ID': '5fec808fe0c231d1daf0e86d'}
+root - WARNING - {'Transaction': 'PAYMENT REJECTED', 'Booking ID': '5fec808fe0c231d1daf0e86d'}
+root - WARNING - {'Transaction': "BOOKING REVERTED BECAUSE CUSTOMER'S BUDGET IS NOT ENOUGH", 'Booking ID': '5fec808fe0c231d1daf0e86d'}
