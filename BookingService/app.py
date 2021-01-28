@@ -1,6 +1,8 @@
 from flask import Flask, request
 from pymongo import MongoClient
 import yaml
+from publisher import publisher
+from saga_transaction_logger import write_transaction
 
 app = Flask(__name__)
 
@@ -35,6 +37,12 @@ def create_booking():
         del payload['_id']
 
         payload['transaction'] = "commit"
+
+        write_transaction({"Transaction": "TRANSACTION STARTED",
+                           "Booking ID": payload['booking_id'],
+                           "Customer ID": request.json.get("customer_id")})
+
+        publisher(queue="flight", message=payload)
 
     response = {
         "inserted_id": str(result.inserted_id),
