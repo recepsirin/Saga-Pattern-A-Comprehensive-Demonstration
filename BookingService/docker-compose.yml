@@ -6,7 +6,7 @@ services:
     hostname: booking_api
     build:
       dockerfile: Dockerfile
-      context: ./dockerfiles/api/
+      context: ./Dockerfiles/api/
     ports:
       - 5000:5000
     depends_on:
