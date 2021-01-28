@@ -1,0 +1,46 @@
+version: '3'
+
+services:
+  booking_api: # booking api
+    container_name: booking_api
+    hostname: booking_api
+    build:
+      dockerfile: Dockerfile
+      context: ./dockerfiles/api/
+    ports:
+      - 5000:5000
+    depends_on:
+      - db
+    restart: always
+
+  db: # booking db
+    hostname: 0.0.0.0
+    container_name: db
+    image: mongo:4.4
+    command: mongod --replSet myreplSet
+    volumes:
+      - ./mongodb/data1/db:/data/db
+      - ./mongodb/data1/configdb:/data/configdb
+    expose:
+      - 27017
+    ports:
+      - 27017:27017
+    restart: always
+
+  booking_server:
+    container_name: booking_server
+    hostname: booking_server
+    image: 'bitnami/nginx:1.16'
+    ports:
+      - '4000:4000'
+    volumes:
+      - './nginx/nginx_api.conf:/opt/bitnami/nginx/conf/server_blocks/nginx_api.conf:ro'
+    depends_on:
+      - booking_api
+    restart: always
+
+
+networks:
+  default:
+    external:
+      name: rabbitmq_network_orc
