@@ -1,0 +1,67 @@
+version: '3'
+
+services:
+
+  rabbitmq-node1:
+    image: rabbitmq:3-management
+    container_name: rabbitmq-node1
+    hostname: rabbitmq-node1
+    restart: always
+    environment:
+      - RABBITMQ_ERLANG_COOKIE=${RABBITMQ_ERLANG_COOKIE}
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+      - RABBITMQ_DEFAULT_VHOST=${RABBITMQ_DEFAULT_VHOST}
+    networks:
+      - rabbitmq-cluster-network
+
+  rabbitmq-node2:
+    image: rabbitmq:3-management
+    container_name: rabbitmq-node2
+    hostname: rabbitmq-node2
+    restart: always
+    depends_on:
+      - rabbitmq-node1
+    environment:
+      - RABBITMQ_ERLANG_COOKIE=${RABBITMQ_ERLANG_COOKIE}
+    volumes:
+      - ./cluster-entrypoint.sh:/usr/local/bin/cluster-entrypoint.sh
+    entrypoint: /usr/local/bin/cluster-entrypoint.sh
+    networks:
+      - rabbitmq-cluster-network
+
+  rabbitmq-node3:
+    image: rabbitmq:3-management
+    container_name: rabbitmq-node3
+    hostname: rabbitmq-node3
+    restart: always
+    depends_on:
+      - rabbitmq-node1
+    environment:
+      - RABBITMQ_ERLANG_COOKIE=${RABBITMQ_ERLANG_COOKIE}
+    volumes:
+      - ./cluster-entrypoint.sh:/usr/local/bin/cluster-entrypoint.sh
+    entrypoint: /usr/local/bin/cluster-entrypoint.sh
+    networks:
+      - rabbitmq-cluster-network
+
+  rabbitmq-haproxy:
+    image: haproxy:1.7
+    container_name: rabbitmq-haproxy
+    restart: always
+    volumes:
+      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+    depends_on:
+      - rabbitmq-node1
+      - rabbitmq-node2
+      - rabbitmq-node3
+    ports:
+      - 15672:15672
+      - 5672:5672
+      - 1936:1936
+    networks:
+      - rabbitmq-cluster-network
+
+networks:
+ rabbitmq-cluster-network:
+  driver: bridge
