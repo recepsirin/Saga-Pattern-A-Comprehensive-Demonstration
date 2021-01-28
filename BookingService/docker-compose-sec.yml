@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  sec_log: # saga log server
+    container_name: sec_log
+    image: nginx:1.17.9
+    volumes:
+      - ./saga.log:/usr/share/nginx/html/saga.log
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - "7755:80"
+    restart: always
+
+  sec: # saga execution coordinator
+    container_name: sec
+    hostname: sec
+    build:
+      dockerfile: Dockerfile
+      context: ./Dockerfiles/sec/
+    ports:
+      - "2001:8000"
+    expose:
+      - 2001
+    restart: always
+
+networks:
+  default:
+    external:
+      name: rabbitmq_network_orc
