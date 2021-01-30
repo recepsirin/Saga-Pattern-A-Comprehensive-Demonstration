@@ -3,26 +3,22 @@
 
 ## Installation
 
-##### Installation consists of two steps.
 
-
-First One
+Up api, db and nginx containers with the command below
 ```bash
 docker-compose up -d
 ```
 
-Wait 50 seconds for downloading container's images, then
-
-Second Step
+Then, up saga execution coordinator and logging service with the command below
 ```bash
 docker-compose -f docker-compose-sec.yml up -d
 ```
 
-### to reach out the saga transactions logs
-7755/saga.log
+### Reaching out to the saga transactions logs
+* localhost:7755/saga.log
 
 ### booking endpoint
-4000/booking [POST]
+* 4000/booking [POST]
 
 ### booking db
-27017/booking
+* 27017/booking
