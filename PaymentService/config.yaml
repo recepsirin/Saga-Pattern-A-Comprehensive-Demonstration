@@ -1,0 +1,13 @@
+host: "0.0.0.0"
+port: 5005
+
+debug: False
+testing: False
+
+mongodb: {
+  dsn: "mongodb://payment_db:27019/payment"
+}
+
+rabbitmq: {
+  dsn: "amqp://guest:guest@localhost:5672/"
+}
