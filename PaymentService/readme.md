@@ -26,11 +26,11 @@ db.createCollection("payment")
 ```
 
 ```bash
-db.flights.insertMany([
+db.payment.insertMany([
                       {"customer_id":"PmCdvNtBSzU2WEgY","wallet":"OK"},
                       {"customer_id":"82yxmrNR2tcRwz78","wallet":"OK"}])
 ```
 
 
 ## payment db
-27019/payment
+* 27019/payment
