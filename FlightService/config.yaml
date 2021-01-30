@@ -1,0 +1,13 @@
+host: "0.0.0.0"
+port: 5001 # if there will be http service
+
+debug: False
+testing: False
+
+mongodb: {
+  dsn: "mongodb://flight_db:27018/flights"
+}
+
+rabbitmq: {
+  dsn: "amqp://guest:guest@localhost:5672/"
+}
