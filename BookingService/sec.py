@@ -29,7 +29,6 @@ def callback(ch, method, properties, body):
     if sec_result['sec_channel'] == "booking":
 
         if sec_result['booking'] == "APPROVED":
-            print("BOOKING AVAILABLE")
 
             del sec_result['booking']
             write_transaction({"Transaction": "BOOKING IS AVAILABLE",
@@ -40,22 +39,16 @@ def callback(ch, method, properties, body):
 
             write_transaction({"Transaction": "BOOKING IS NOT AVAILABLE",
                                "Booking ID": sec_result['booking_id']})
-
-            print("BOOKING NOT AVAILABLE", sec_result)
             # compensating transaction
 
     elif sec_result['sec_channel'] == "payment":
-        print("sec channel payment", sec_result)
         if sec_result['payment'] == "APPROVED":
-            print("PAYMENT BAŞARILI")
-            print("TÜM TRANSACTIONLAR BAŞARILI")
 
             write_transaction({"Transaction": "PAYMENT APPROVED - ALL SUCCESSFUL",
                                "Booking ID": sec_result['booking_id'],
                                "Customer ID": sec_result['customer_id']})
 
         elif sec_result['payment'] == "REJECTED":
-            print("PAYMENT BAŞARISIZ", sec_result)
 
             write_transaction({"Transaction": "PAYMENT REJECTED",
                                "Booking ID": sec_result['booking_id']})
@@ -66,7 +59,6 @@ def callback(ch, method, properties, body):
                                                "transaction": "compensating"})
 
     elif sec_result['sec_channel'] == "compensating":
-        print("sec res", sec_result)
         write_transaction({"Transaction": "BOOKING REVERTED BECAUSE CUSTOMER'S BUDGET IS NOT ENOUGH",
                            "Booking ID": sec_result['booking_id']})
 
